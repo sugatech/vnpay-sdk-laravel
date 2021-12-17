@@ -2,6 +2,8 @@
 
 namespace Vnpay\SDK\Models;
 
+use Vnpay\SDK\Enums\PaymentStatus;
+
 class Payment
 {
     /**
@@ -32,6 +34,16 @@ class Payment
     /**
      * @var string
      */
+    public $ipnUrl;
+
+    /**
+     * @var string
+     */
+    public $transactionId;
+
+    /**
+     * @var string
+     */
     public $createdAt;
 
     /**
@@ -39,20 +51,22 @@ class Payment
      */
     public $updatedAt;
 
-    public function __construct($id, $orderId, $amount, $status, $redirectUrl,  $createdAt, $updatedAt)
+    public function __construct($id, $orderId, $amount, $status, $redirectUrl, $ipnUrl, $transactionId, $createdAt, $updatedAt)
     {
         $this->id = $id;
         $this->orderId = $orderId;
         $this->amount = $amount;
         $this->status = $status;
         $this->redirectUrl = $redirectUrl;
+        $this->ipnUrl = $ipnUrl;
+        $this->transactionId = $transactionId;
         $this->createdAt = $createdAt;
         $this->updatedAt = $updatedAt;
     }
 
     /**
      * @param $array
-     * @return Payment
+     * @return \Vnpay\SDK\Models\Payment
      */
     static function fromArray($array)
     {
@@ -62,6 +76,8 @@ class Payment
             @$array['amount'],
             @$array['status'],
             @$array['redirect_url'],
+            @$array['ipn_url'],
+            @$array['transaction_id'],
             @$array['created_at'],
             @$array['updated_at'],
         );
@@ -73,14 +89,23 @@ class Payment
     public function toArray()
     {
         return [
-          'id' => $this->id,
-          'order_id' => $this->orderId,
-          'amount' => $this->amount,
-          'status' => $this->status,
-          'redirect_url' => $this->redirectUrl,
-          'created_at' => $this->createdAt,
-          'updated_at' => $this->updatedAt,
+            'id' => $this->id,
+            'order_id' => $this->orderId,
+            'amount' => $this->amount,
+            'status' => $this->status,
+            'redirect_url' => $this->redirectUrl,
+            'ipn_url' => $this->ipnUrl,
+            'transaction_id' => $this->transactionId,
+            'created_at' => $this->createdAt,
+            'updated_at' => $this->updatedAt,
         ];
     }
 
+    /**
+     * @return bool
+     */
+    public function isCaptured()
+    {
+        return $this->status == PaymentStatus::Captured;
+    }
 }
