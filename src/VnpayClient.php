@@ -6,6 +6,7 @@ use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Http;
 use OAuth2ClientCredentials\OAuthClient;
 use Vnpay\SDK\Models\Payment;
+use Exception;
 
 class VnpayClient
 {
@@ -95,5 +96,19 @@ class VnpayClient
         }
 
         return Payment::fromArray($response->json());
+    }
+
+    /**
+     * @param array $params
+     * @return \Vnpay\SDK\Models\Payment
+     * @throws \Exception
+     */
+    public function ipn($params)
+    {
+        if (empty($params)) {
+            throw new Exception('Empty params');
+        }
+
+        return Payment::fromArray($params);
     }
 }
