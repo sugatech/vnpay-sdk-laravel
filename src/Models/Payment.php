@@ -79,7 +79,7 @@ class Payment
             @$array['ipn_url'],
             @$array['transaction_id'],
             @$array['created_at'],
-            @$array['updated_at'],
+            @$array['updated_at']
         );
     }
 
@@ -107,5 +107,21 @@ class Payment
     public function isCaptured()
     {
         return $this->status == PaymentStatus::Captured;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanceled()
+    {
+        return $this->status == PaymentStatus::Canceled;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFailed()
+    {
+        return $this->status == PaymentStatus::Failed;
     }
 }
