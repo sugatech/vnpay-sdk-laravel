@@ -8,4 +8,6 @@ class PaymentStatus extends Enum
 {
     const Created = "created";
     const Captured = "captured";
+    const Failed = 'failed';
+    const Canceled = 'canceled';
 }
